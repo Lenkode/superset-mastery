@@ -23,3 +23,5 @@ docker/*/postgres-data/
 docker/*/redis-data/
 data/*.csv
 data/individual_stocks_5yr/
+data/load_stocks_preprod.py
+data/load_stocks_prod.py
