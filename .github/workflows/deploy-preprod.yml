@@ -16,3 +16,12 @@ jobs:
         run: |
           cd ~/Desktop/superset-mastery/docker/preprod
           docker compose --env-file ../../.env.preprod up -d --build
+
+      - name: Import dashboards
+        run: |
+          cd ~/Desktop/superset-mastery
+          for zip in dashboards/*.zip; do
+            docker exec dev-superset-1 superset import-dashboards -p /tmp/$(basename $zip) 2>/dev/null || \
+            docker cp $zip preprod-superset-1:/tmp/$(basename $zip) && \
+            docker exec preprod-superset-1 superset import-dashboards -p /tmp/$(basename $zip)
+          done
