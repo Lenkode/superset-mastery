@@ -3,7 +3,7 @@ name: Deploy to Prod
 on:
   push:
     branches:
-      - main
+      - preprod
 
 jobs:
   deploy:
@@ -22,5 +22,5 @@ jobs:
           cd ~/Desktop/superset-mastery
           for zip in dashboards/*.zip; do
             docker cp $zip prod-superset-1:/tmp/$(basename $zip) && \
-            docker exec prod-superset-1 superset import-dashboards -p /tmp/$(basename $zip)
+            docker exec prod-superset-1 superset import-dashboards -p /tmp/$(basename $zip) -u admin
           done
