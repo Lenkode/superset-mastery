@@ -21,3 +21,5 @@ docker/*/redis-data
 Thumbs.db
 docker/*/postgres-data/
 docker/*/redis-data/
+data/*.csv
+data/individual_stocks_5yr/
