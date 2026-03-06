@@ -1,6 +1,7 @@
-
 x-superset-common: &superset-common
-  image: apache/superset:latest
+  build:
+    context: ../..
+    dockerfile: docker/superset.Dockerfile
   env_file: ../../.env.preprod
   environment:
     - SUPERSET_CONFIG_PATH=/app/superset_config.py
@@ -46,23 +47,19 @@ services:
     <<: *superset-common
     ports:
       - "${SUPERSET_PORT}:8088"
-    command: >
-      bash -c "
+    command:
+      - bash
+      - -c
+      - |
         superset db upgrade &&
-        superset fab create-admin
-          --username admin
-          --firstname Admin
-          --lastname Preprod
-          --email admin@preprod.local
-          --password admin &&
+        superset fab create-admin --username admin --firstname Admin --lastname Preprod --email admin@preprod.local --password admin &&
         superset init &&
         superset run -h 0.0.0.0 -p 8088 --with-threads
-      "
 
   superset-worker:
     <<: *superset-common
-    command: celery --app=superset.tasks.celery_app:app worker --loglevel=info
+    command: ["celery", "--app=superset.tasks.celery_app:app", "worker", "--loglevel=info"]
 
   superset-beat:
     <<: *superset-common
-    command: celery --app=superset.tasks.celery_app:app beat --loglevel=info
+    command: ["celery", "--app=superset.tasks.celery_app:app", "beat", "--loglevel=info"]
