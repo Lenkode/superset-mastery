@@ -19,3 +19,5 @@ docker/*/redis-data
 # OS
 .DS_Store
 Thumbs.db
+docker/*/postgres-data/
+docker/*/redis-data/
