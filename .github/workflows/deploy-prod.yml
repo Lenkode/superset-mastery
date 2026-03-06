@@ -21,9 +21,5 @@ jobs:
         run: |
           cd ~/Desktop/superset-mastery
           for zip in dashboards/*.zip; do
-            docker cp $zip prod-superset-1:/tmp/$(basename $zip) && \
-            docker exec prod-superset-1 superset import-dashboards \
-              -p /tmp/$(basename $zip) \
-              -u admin \
-              --passwords '{"databases/Finance.yaml": "analyst"}'
+            bash scripts/import_dashboard.sh prod-superset-1 $zip analyst
           done
