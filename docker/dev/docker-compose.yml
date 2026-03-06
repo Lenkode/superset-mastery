@@ -63,3 +63,19 @@ services:
   superset-beat:
     <<: *superset-common
     command: ["celery", "--app=superset.tasks.celery_app:app", "beat", "--loglevel=info"]
+
+  datadb:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=finance
+      - POSTGRES_USER=analyst
+      - POSTGRES_PASSWORD=analyst
+    ports:
+      - "5535:5432"
+    volumes:
+      - ./datadb-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analyst -d finance"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
