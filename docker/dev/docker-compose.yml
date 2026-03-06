@@ -1,4 +1,3 @@
-version: "3.8"
 
 x-superset-common: &superset-common
   image: apache/superset:latest
